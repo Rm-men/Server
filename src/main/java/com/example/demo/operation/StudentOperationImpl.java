@@ -19,8 +19,8 @@ public class StudentOperationImpl implements StudentOperation {
     }
 
     @Override
-    public boolean markAttend(Student s, Attend a) {
-        return false;
+    public Attend markAttend(Student s, Attend a) {
+        return null;
     }
 }
 

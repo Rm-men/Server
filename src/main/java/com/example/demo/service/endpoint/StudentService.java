@@ -19,7 +19,7 @@ public class StudentService {
     }
 
     @WebMethod()
-    public boolean setAttend(Student s, Attend a){
+    public Attend setAttend(Student s, Attend a){
         return obj.markAttend(s,a);
     }
 

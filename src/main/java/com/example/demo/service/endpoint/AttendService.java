@@ -14,10 +14,6 @@ public class AttendService {
     static AttendOperationImpl obj = new AttendOperationImpl();
 
     @WebMethod()
-    public List<Student> getAllStudent(){
-        return obj.getListOfStudent();
-    }
-    @WebMethod()
     public List<Attend> getAllAttend(){
         return obj.getListOfAttend();
     }

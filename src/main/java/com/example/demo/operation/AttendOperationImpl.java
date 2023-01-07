@@ -8,12 +8,8 @@ import java.util.List;
 public class AttendOperationImpl implements AttendOperation {
 
     @Override
-    public List<Student> getListOfStudent() {
-        return null;
-    }
-
-    @Override
     public List<Attend> getListOfAttend() {
+
         return null;
     }
 

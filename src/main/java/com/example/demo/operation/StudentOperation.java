@@ -8,5 +8,5 @@ import java.util.List;
 public interface StudentOperation {
     List<Attend> getListOfAttend();
     Student loginStudent(String code);
-    boolean markAttend(Student s, Attend a);
+    Attend markAttend(Student s, Attend a);
 }
