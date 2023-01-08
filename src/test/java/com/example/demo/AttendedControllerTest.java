@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -54,7 +55,7 @@ public class AttendedControllerTest {
         assert (la.get(0) == added);
     }
     @Test
-    void setNewAttend_noFirst(){
+    void setNewAttend_noFirst() throws SQLException {
         Attend added = a2;
         attendOperation.addNewAttend(a1);
         attendOperation.addNewAttend(added);
