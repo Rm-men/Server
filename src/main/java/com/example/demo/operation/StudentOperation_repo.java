@@ -6,7 +6,8 @@ import com.example.demo.types.Student;
 import java.sql.SQLException;
 import java.util.List;
 
-public interface AttendOperation {
-    List<Attend> getListOfAttend() throws SQLException;
-    List<Attend> addNewAttend(Attend a) throws SQLException;
+public interface StudentOperation_repo {
+    List<Attend> getListOfAttend() ;
+    Student loginStudent(String code) ;
+    Attend markAttend(Student s, Attend a) ;
 }

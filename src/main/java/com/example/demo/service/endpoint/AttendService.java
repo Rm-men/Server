@@ -1,33 +1,31 @@
 package com.example.demo.service.endpoint;
 
-import com.example.demo.operation.AttendOperationImpl;
+import com.example.demo.operation.AttendOperation_repo;
+import com.example.demo.operation.AttendOperation_repo_Impl;
 import com.example.demo.types.Attend;
-import com.example.demo.types.Student;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebService;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @WebService()
 public class AttendService {
 
-    static AttendOperationImpl obj;
+    private final AttendOperation_repo repo;
 
-    static {
-        try {
-            obj = new AttendOperationImpl();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public AttendService(){
+        repo = new AttendOperation_repo_Impl();
+    }
+    public AttendService(AttendOperation_repo ao_r) {
+        repo = ao_r;
     }
 
     @WebMethod()
-    public List<Attend> getAllAttend() throws SQLException {
-        return obj.getListOfAttend();
+    public List<Attend> getAllAttend()  {
+        return repo.getListOfAttend();
     }
     @WebMethod()
-    public List<Attend> setNewAttend(Attend a) throws SQLException {
-        return obj.addNewAttend(a);
+    public List<Attend> setNewAttend(Attend a)  {
+        return repo.addNewAttend(a);
     }
 }

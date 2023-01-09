@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import com.example.demo.operation.StudentOperationImpl;
+import com.example.demo.operation.StudentOperation_repo_Impl;
 import com.example.demo.service.endpoint.StudentService;
 import com.example.demo.types.Attend;
 import com.example.demo.types.Student;
@@ -17,7 +17,7 @@ public class StudentControllerTest {
     @InjectMocks
     private StudentService service;
     @Mock
-    private StudentOperationImpl studentOperation;
+    private StudentOperation_repo_Impl studentOperation;
     Date now = new Date();
 
     Student vyasa = new Student(0, "Вася", "Васиков", "Васильевич", 300, "8800");
