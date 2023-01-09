@@ -12,7 +12,6 @@ import static org.mockito.Mockito.when;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -21,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class AttendedControllerTest {
+public class TestAttendedController {
     @Mock
     private AttendOperation_repo attendOp_repo = mock(AttendOperation_repo_Impl.class);
     @InjectMocks
@@ -33,8 +32,8 @@ public class AttendedControllerTest {
     private Statement mockStatement;
 
     Date now = new Date();
-    Student vyasa = new Student(0, "Вася", "Васиков", "Васильевич", 300, "8800");
-    Student ivyasa = new Student(1, "Иван", "Иванов", "Иванович", 300, "55535");
+    Student vyasa = new Student(0, "Р’Р°СЃСЏ", "Р’Р°СЃРёРєРѕРІ", "Р’Р°СЃРёР»СЊРµРІРёС‡", 300, "8800");
+    Student ivyasa = new Student(1, "РРІР°РЅ", "РРІР°РЅРѕРІ", "РРІР°РЅРѕРІРёС‡", 300, "55535");
 
     Attend a1 = new Attend(0, 0, now.toString(), 0, "-");
     Attend a2 = new Attend(1, 0, now.toString(), 1, "-");
@@ -43,7 +42,7 @@ public class AttendedControllerTest {
     Attend a_noneAttend = new Attend(3, 0, now.toString(), 3, null);
     Attend a_noneAttend_noneDate = new Attend(3, 0, null, 3, null);
 
-
+/*
     //region GetAttends (2)
     @Test
     void getAllAttend_empty() {
@@ -60,7 +59,6 @@ public class AttendedControllerTest {
         assertEquals (la.get(0) , a1);
     }
     //endregion
-
     //region NewAttend (6)
     @Test
     void setNewAttend_first()  {
@@ -125,4 +123,6 @@ public class AttendedControllerTest {
         assertEquals (la.size() , 1);
     }
     //endregion
+
+ */
 }

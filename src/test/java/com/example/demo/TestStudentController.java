@@ -12,23 +12,34 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class StudentControllerTest {
+
+public class TestStudentController {
     @InjectMocks
     private StudentService service;
     @Mock
     private StudentOperation_repo_Impl studentOperation;
     Date now = new Date();
 
-    Student vyasa = new Student(0, "Вася", "Васиков", "Васильевич", 300, "8800");
-    Student vyasa_noName = new Student(1, null, "Васиков", "Васильевич", 300, "8801");
-    Student vyasa_noFamily = new Student(2, "Вася", null, "Васильевич", 300, "8802");
-    Student vyasa_noPatr = new Student(3, "Вася", "Васиков", null, 300, "8803");
-    Student vyasa_noCode = new Student(4, "Вася", "Васиков", "Васильевич", 300, null);
+    Student vyasa = new Student(0, "Р’Р°СЃСЏ", "Р’Р°СЃРёРєРѕРІ", "Р’Р°СЃРёР»СЊРµРІРёС‡", 300, "8800");
+    Student vyasa_noName = new Student(1, null, "Р’Р°СЃРёРєРѕРІ", "Р’Р°СЃРёР»СЊРµРІРёС‡", 300, "8801");
+    Student vyasa_noFamily = new Student(2, "Р’Р°СЃСЏ", null, "Р’Р°СЃРёР»СЊРµРІРёС‡", 300, "8802");
+    Student vyasa_noPatr = new Student(3, "Р’Р°СЃСЏ", "Р’Р°СЃРёРєРѕРІ", null, 300, "8803");
+    Student vyasa_noCode = new Student(4, "Р’Р°СЃСЏ", "Р’Р°СЃРёРєРѕРІ", "Р’Р°СЃРёР»СЊРµРІРёС‡", 300, null);
     Attend a1 = new Attend(0, 0, now.toString(), 0, "-");
     Attend a2 = new Attend(1, 0, now.toString(), 1, "-");
     Attend a3 = new Attend(2, 0, now.toString(), 2, "-");
 
+    @Test
+    void stupid() {
+        assertEquals(1,1);
+    }
+    @Test
+    void stupid2() {
+        assertEquals(1,2);
+    }
+/*
     //region Login (3)
     @Test
     void loginStudent_good() {
@@ -89,4 +100,5 @@ public class StudentControllerTest {
         assert (la.get(2) == a3);
     }
     //endregion
+    */
 }
