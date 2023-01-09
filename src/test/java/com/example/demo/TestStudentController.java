@@ -31,14 +31,6 @@ public class TestStudentController {
     Attend a2 = new Attend(1, 0, now.toString(), 1, "-");
     Attend a3 = new Attend(2, 0, now.toString(), 2, "-");
 
-    @Test
-    void stupid() {
-        assertEquals(1,1);
-    }
-    @Test
-    void stupid2() {
-        assertEquals(1,1);
-    }
 /*
     //region Login (3)
     @Test

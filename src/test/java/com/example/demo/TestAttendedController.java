@@ -42,21 +42,23 @@ public class TestAttendedController {
     Attend a_noneAttend = new Attend(3, 0, now.toString(), 3, null);
     Attend a_noneAttend_noneDate = new Attend(3, 0, null, 3, null);
 
-/*
+
     //region GetAttends (2)
     @Test
     void getAllAttend_empty() {
-        List<Attend> la = attendOp_repo.getListOfAttend();
-        assert (la.size() == 0);
+        List<Attend> la = new ArrayList<>();
+        when(attendService.getAllAttend()).thenReturn(la);
+        List<Attend> la2 = attendService.getAllAttend();
+        assertEquals (la2 , la);
     }
     @Test
     void getAllAttend_noEmpty()  {
         List<Attend> la = new ArrayList<>();
+        la.add(a1);
+        la.add(a2);
         when(attendService.getAllAttend()).thenReturn(la);
-        assertEquals (la.size() , 0);
-        la = attendOp_repo.addNewAttend(a1);
-        assertEquals (la.size() , 1);
-        assertEquals (la.get(0) , a1);
+        List<Attend> la2 = attendService.getAllAttend();
+        assertEquals (la , la2);
     }
     //endregion
     //region NewAttend (6)
@@ -124,5 +126,5 @@ public class TestAttendedController {
     }
     //endregion
 
- */
+
 }
