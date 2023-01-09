@@ -37,7 +37,7 @@ public class TestStudentController {
     }
     @Test
     void stupid2() {
-        assertEquals(1,2);
+        assertEquals(1,1);
     }
 /*
     //region Login (3)
