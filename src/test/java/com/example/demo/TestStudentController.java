@@ -1,6 +1,10 @@
 package com.example.demo;
 
+import com.example.demo.operation.AttendOperation_repo;
+import com.example.demo.operation.AttendOperation_repo_Impl;
+import com.example.demo.operation.StudentOperation_repo;
 import com.example.demo.operation.StudentOperation_repo_Impl;
+import com.example.demo.service.endpoint.AttendService;
 import com.example.demo.service.endpoint.StudentService;
 import com.example.demo.types.Attend;
 import com.example.demo.types.Student;
@@ -8,89 +12,59 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 public class TestStudentController {
-    @InjectMocks
-    private StudentService service;
     @Mock
-    private StudentOperation_repo_Impl studentOperation;
+    private StudentOperation_repo repo = mock(StudentOperation_repo_Impl.class);
+    @InjectMocks
+    private StudentService service = new StudentService(repo);
     Date now = new Date();
 
     Student vyasa = new Student(0, "Вася", "Васиков", "Васильевич", 300, "8800");
-    Student vyasa_noName = new Student(1, null, "Васиков", "Васильевич", 300, "8801");
-    Student vyasa_noFamily = new Student(2, "Вася", null, "Васильевич", 300, "8802");
-    Student vyasa_noPatr = new Student(3, "Вася", "Васиков", null, 300, "8803");
-    Student vyasa_noCode = new Student(4, "Вася", "Васиков", "Васильевич", 300, null);
     Attend a1 = new Attend(0, 0, now.toString(), 0, "-");
-    Attend a2 = new Attend(1, 0, now.toString(), 1, "-");
-    Attend a3 = new Attend(2, 0, now.toString(), 2, "-");
 
-/*
-    //region Login (3)
+    //region Login (1)
     @Test
-    void loginStudent_good() {
-        Student st = studentOperation.loginStudent("8800");
-        assert (st.equals(vyasa));
-    }
+    void loginStudent() {
+        when(repo.loginStudent(vyasa.getCode())).thenReturn(vyasa);
 
-    @Test
-    void loginStudent_noCodeOnInput() {
-        Student st = studentOperation.loginStudent(null);
-        assert (st == null);
-    }
+        Student st = service.loginStudent(vyasa.getCode());
 
-    @Test
-    void loginStudent_notCorrectCode() {
-        Student st = studentOperation.loginStudent("sdafjlludifdsi");
-        assert (st == null);
+        assertEquals (st,vyasa);
     }
     //endregion
 
-    //region MarkAttend (4)
+    //region MarkAttend (1)
     @Test
-    void markAttend_good() {
-        Attend rez = studentOperation.markAttend(vyasa, a1);
-        assert (rez != null);
-        assert (!Objects.equals(rez.getAttended(), "-"));
-    }
+    void markAttend() {
+        Attend a1_1 = new Attend(0, 0, now.toString(), 0, new Date().toString());
 
-    @Test
-    void markAttend_noStudent() {
-        Attend rez = studentOperation.markAttend(null, a1);
-        assert (rez == null);
-        assert (Objects.equals(a1.getAttended(), "-"));
-    }
+        when(repo.markAttend(vyasa,a1)).thenReturn(a1_1);
 
-    @Test
-    void markAttend_noAttend() {
-        Attend rez = studentOperation.markAttend(vyasa, null);
-        assert (rez == null);
-        assert (Objects.equals(a1.getAttended(), "-"));
-    }
-
-    @Test
-    void markAttend_noAttend_noStudent() {
-        Attend rez = studentOperation.markAttend(null, null);
-        assert (rez == null);
-        assert (Objects.equals(a1.getAttended(), "-"));
-    }
-
-    //endregion
-
-    //region GetAttend (1)
-    @Test
-    void getListOfAttend_good() {
-        List<Attend> la = studentOperation.getListOfAttend();
-        assert (la.get(0) == a1);
-        assert (la.get(1) == a2);
-        assert (la.get(2) == a3);
+        Attend rez = service.setAttend(vyasa, a1);
+        assertEquals(a1_1, rez);
     }
     //endregion
-    */
+
+    //region getAllAttend (1)
+    @Test
+    void getAllAttend() {
+        List<Attend> a1 = new ArrayList<>();
+        a1.add(this.a1);
+
+        when(repo.getListOfAttend()).thenReturn(a1);
+
+        List<Attend> a2 = service.getAllAttend();
+        assertEquals(a1, a2);
+    }
+    //endregion
 }

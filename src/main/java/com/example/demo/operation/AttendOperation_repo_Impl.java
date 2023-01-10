@@ -8,22 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AttendOperation_repo_Impl implements AttendOperation_repo {
-    @Override
-    public String getGET_ALL() {
-        return GET_ALL;
-    }
 
-    final static String GET_ALL = "SELECT * FROM attending";
+    public String GET_ALL = "SELECT * FROM attending";
 
-    public String getADD_NEW_ATTEND() {
-        return ADD_NEW_ATTEND;
-    }
-
-    final static String ADD_NEW_ATTEND = "INSERT INTO attending VALUES (?,?,?,?,?)";
+    public String ADD_NEW_ATTEND = "INSERT INTO attending VALUES (?,?,?,?,?)";
     Connection _conn;
     @Override
-    public void setConn(Connection conn){
+    public Connection setConn(Connection conn){
         _conn = conn;
+        return _conn;
     }
 
     @Override
@@ -48,9 +41,9 @@ public class AttendOperation_repo_Impl implements AttendOperation_repo {
         }
     }
 
-    @Override
+/*    @Override
     public List<Attend> addNewAttend(Attend a){
-        try (PreparedStatement ps = JDBCUtils.getConnectJDBC().prepareStatement(ADD_NEW_ATTEND)){
+        try (PreparedStatement ps = _conn.prepareStatement(ADD_NEW_ATTEND)){
             ps.setInt(1, a.getId());
             ps.setInt(2, a.getSubject());
             ps.setString(3, a.getDatetime());
@@ -66,6 +59,6 @@ public class AttendOperation_repo_Impl implements AttendOperation_repo {
             return null;
         }
         // return null;
-    }
+    }*/
 }
 

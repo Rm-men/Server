@@ -17,7 +17,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import static com.example.demo.utils.JDBCUtils.getConnectJDBC;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -25,15 +24,7 @@ import static org.mockito.Mockito.*;
 
 public class TestAttendedRepo {
     @Mock
-    // private AttendOperation_repo repo = mock(AttendOperation_repo_Impl.class);
-    private AttendOperation_repo repo = new AttendOperation_repo_Impl();
-
-    @InjectMocks
-    JDBCUtils jdbcUtils;
-    @Mock
-    public Connection mConn = mock(Connection.class);
-    @Mock
-    public Statement mStatement;
+    private AttendOperation_repo_Impl repo = new AttendOperation_repo_Impl();
 
     Date now = new Date();
     Student vyasa = new Student(0, "Вася", "Васиков", "Васильевич", 300, "8800");
@@ -46,7 +37,14 @@ public class TestAttendedRepo {
     Attend a_noneAttend = new Attend(3, 0, now.toString(), 3, null);
     Attend a_noneAttend_noneDatetime = new Attend(3, 0, null, 3, null);
 
-    //region GetAttends (2)
+    @Test
+    void conn_good() {
+        Connection jdbcConnection = mock(Connection.class);
+        Connection connection = repo.setConn(jdbcConnection);
+        assertNotNull(connection);
+        assertEquals(jdbcConnection,connection);
+    }
+    //region GetAttends (3)
     @Test
     void getAllAttend_first() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
@@ -59,7 +57,7 @@ public class TestAttendedRepo {
         when(rs.getInt("student")).thenReturn(a1.getStudent());
         when(rs.getString("attended")).thenReturn(a1.getAttended());
         Statement statement = mock(Statement.class);
-        when(statement.executeQuery(repo.getGET_ALL())).thenReturn(rs);
+        when(statement.executeQuery(repo.GET_ALL)).thenReturn(rs);
         when(jdbcConnection.createStatement()).thenReturn(statement);
 
         repo.setConn(jdbcConnection);
@@ -88,13 +86,13 @@ public class TestAttendedRepo {
         when(rs.getInt("student")).thenReturn(a1.getStudent());
         when(rs.getString("attended")).thenReturn(a1.getAttended());
         Statement statement = mock(Statement.class);
-        when(statement.executeQuery(repo.getGET_ALL())).thenReturn(rs);
+        when(statement.executeQuery(repo.GET_ALL)).thenReturn(rs);
         when(jdbcConnection.createStatement()).thenReturn(statement);
 
-        repo.setConn(null);
         List<Attend> list_code = new ArrayList<>();
         list_code.add(a1);
         Throwable thrown = assertThrows(Exception.class, () -> {
+            repo.setConn(null);
             List<Attend> list_repo = repo.getListOfAttend();
             assertEquals(list_repo.size(), list_code.size());
             for (int i = 0; i< list_repo.size(); i++) {
@@ -107,10 +105,46 @@ public class TestAttendedRepo {
         });
         assertNotNull(thrown.getMessage());
     }
-    //endregion
-    //region NewAttend (1)
     @Test
-    void setNewAttend()  {
-        repo.addNewAttend(a1);
+    void getAllAttend_none() throws Exception {
+        Connection jdbcConnection = mock(Connection.class);
+
+        ResultSet rs = mock(ResultSet.class);
+        when(rs.next()).thenReturn(false);
+        Statement statement = mock(Statement.class);
+        when(statement.executeQuery(repo.GET_ALL)).thenReturn(rs);
+        when(jdbcConnection.createStatement()).thenReturn(statement);
+
+        repo.setConn(jdbcConnection);
+        List<Attend> list_repo = repo.getListOfAttend();
+
+        assertEquals(list_repo.size(), 0);
     }
+    //endregion
+    /*//region NewAttend (6)
+    @Test
+    void setNewAttend_first()  {
+        assertEquals(1,2);
+    }
+    @Test
+    void setNewAttend_noFirst()  {
+        assertEquals(1,2);
+    }
+    @Test
+    void setNewAttend_null()  {
+        assertEquals(1,2);
+    }
+    @Test
+    void setNewAttend_noneDate()  {
+        assertEquals(1,2);
+    }
+    @Test
+    void setNewAttend_noneDate_noAttend()  {
+        assertEquals(1,2);
+    }
+    @Test
+    void setNewAttend_noneAttend()  {
+        assertEquals(1,2);
+    }
+    //endregion*/
 }

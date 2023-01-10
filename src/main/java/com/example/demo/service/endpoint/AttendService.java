@@ -24,8 +24,8 @@ public class AttendService {
     public List<Attend> getAllAttend()  {
         return repo.getListOfAttend();
     }
-    @WebMethod()
+/*    @WebMethod()
     public List<Attend> setNewAttend(Attend a)  {
         return repo.addNewAttend(a);
-    }
+    }*/
 }

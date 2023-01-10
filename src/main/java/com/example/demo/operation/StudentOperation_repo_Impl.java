@@ -8,19 +8,25 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class StudentOperation_repo_Impl implements StudentOperation_repo {
-    private final static String GET_STUDENT_BY_CODE = "SELECT * FROM student WHERE code = ?";
-    private final static String GET_ATTEND_ALL = "SELECT * FROM attending";
-    private final static String SET_ATTEND = "UPDATE attending SET attended = ? WHERE student = ? AND id = ?";
-    private final static String GET_ATTEND_BY_ID = "SELECT * FROM attending WHERE id = ?";
+    public String GET_STUDENT_BY_CODE = "SELECT * FROM student WHERE code = ?";
+    public String GET_ATTEND_ALL = "SELECT * FROM attending";
+    public String SET_ATTEND = "UPDATE attending SET attended = ? WHERE student = ? AND id = ?";
+    public String GET_ATTEND_BY_ID = "SELECT * FROM attending WHERE id = ?";
     public StudentOperation_repo_Impl() {
     }
-
+    Connection _conn;
+    @Override
+    public Connection setConn(Connection conn){
+        _conn = conn;
+        return _conn;
+    }
 
     @Override
     public List<Attend> getListOfAttend() {
-        try (Statement stmt = JDBCUtils.getConnectJDBC().createStatement()) {
+        try (Statement stmt = _conn.createStatement()) {
         ResultSet rs = stmt.executeQuery(GET_ATTEND_ALL);
         List<Attend> lstAttend = new ArrayList<>();
         while (rs.next()) {
@@ -40,53 +46,48 @@ public class StudentOperation_repo_Impl implements StudentOperation_repo {
     }
 
     @Override
-    public Student loginStudent(String code)  {
-        try (PreparedStatement ps = JDBCUtils.getConnectJDBC().prepareStatement(GET_STUDENT_BY_CODE)){
-        ps.setString(1,code);
-        ResultSet rs = ps.executeQuery();
-        Student stud = null;
-        while (rs.next()) {
-            if (stud == null)
-            {
-                stud = new Student(rs.getInt("id"),rs.getString("name"),
-                        rs.getString("family"),rs.getString("patronymic"),rs.getInt("group"),rs.getString("code"));
+    public Student loginStudent(String code) {
+        try (PreparedStatement ps = _conn.prepareStatement(GET_STUDENT_BY_CODE)) {
+            if (Objects.equals(code, "") || code == null)
+                throw new Exception();
+            ps.setString(1, code);
+            ResultSet rs = ps.executeQuery();
+            Student st = null;
+            while (rs.next()) {
+                st = new Student(rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("family"),
+                        rs.getString("patronymic"),
+                        rs.getInt("group"),
+                        rs.getString("code"));
             }
-            else
-            {
-                return null;
-            }
-
-        }
-        return stud;
-    } catch (SQLException e) {
-        System.out.println("IN get by id  exception: " + e.getMessage());
-        return null;
+            return st;
+        } catch (Exception e) {
+            System.out.println("IN get by id  exception: " + e.getMessage());
+            return null;
         }
     }
-
     @Override
     public Attend markAttend(Student s, Attend a) {
-    try (PreparedStatement ps = JDBCUtils.getConnectJDBC().prepareStatement(SET_ATTEND);
-         PreparedStatement ps2 = JDBCUtils.getConnectJDBC().prepareStatement(GET_ATTEND_BY_ID)){
-        java.util.Date now = new Date();
-        ps.setString(1, now.toString());
+    try (PreparedStatement ps = _conn.prepareStatement(SET_ATTEND);
+         PreparedStatement ps2 = _conn.prepareStatement(GET_ATTEND_BY_ID)){
+        if (s == null || a == null) throw new Exception();
+        ps.setString(1, new Date().toString());
         ps.setInt(2, s.getId());
         ps.setInt(3, a.getId());
         ps.executeQuery();
-        ps2.setInt(1, a.getId());
         ResultSet rs = ps2.executeQuery();
         Attend at = null;
         while (rs.next()) {
-            if (at == null) {
-                at = new Attend(rs.getInt("id"), rs.getInt("subject"), rs.getString("datetime"),
-                        rs.getInt("student"), rs.getString("attend"));
-            } else {
-                return null;
-            }
+                at = new Attend(rs.getInt("id"),
+                        rs.getInt("subject"),
+                        rs.getString("datetime"),
+                        rs.getInt("student"),
+                        rs.getString("attend"));
         }
         return at;
     }
-    catch (SQLException e) {
+    catch (Exception e) {
         System.out.println("IN get by id  exception: " + e.getMessage());
         return null;
         }
