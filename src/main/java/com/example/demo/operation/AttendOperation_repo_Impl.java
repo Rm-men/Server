@@ -8,17 +8,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AttendOperation_repo_Impl implements AttendOperation_repo {
+    @Override
+    public String getGET_ALL() {
+        return GET_ALL;
+    }
 
-    private final static String GET_ALL = "SELECT * FROM attending";
-    private final static String ADD_NEW_ATTEND = "INSERT INTO attending VALUES (?,?,?,?,?)";
+    final static String GET_ALL = "SELECT * FROM attending";
 
+    public String getADD_NEW_ATTEND() {
+        return ADD_NEW_ATTEND;
+    }
 
-    public AttendOperation_repo_Impl(){
+    final static String ADD_NEW_ATTEND = "INSERT INTO attending VALUES (?,?,?,?,?)";
+    Connection _conn;
+    @Override
+    public void setConn(Connection conn){
+        _conn = conn;
     }
 
     @Override
     public List<Attend> getListOfAttend() {
-        try (Statement stmt = JDBCUtils.getConnectJDBC().createStatement()){
+        try (Statement stmt = _conn.createStatement()){
             ResultSet rs = stmt.executeQuery(GET_ALL);
             List<Attend> lstAttend = new ArrayList<>();
             while (rs.next()) {
@@ -32,7 +42,7 @@ public class AttendOperation_repo_Impl implements AttendOperation_repo {
             }
             return lstAttend;
         }
-        catch (SQLException e) {
+        catch (Exception e) {
             System.out.println("IN get by id  exception: " + e.getMessage());
             return null;
         }
@@ -49,11 +59,13 @@ public class AttendOperation_repo_Impl implements AttendOperation_repo {
             ps.addBatch();
             ps.executeBatch();
             return getListOfAttend();
+            // возвращать массив интов
         }
                 catch (SQLException e) {
             System.out.println("IN get by id  exception: " + e.getMessage());
             return null;
         }
+        // return null;
     }
 }
 
