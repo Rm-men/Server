@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 public class TestMain {
 
     @Test
-    public void main() {
+    public void main() throws SQLException {
         PublicWS.main(new String[]{});
     }
 }

@@ -11,6 +11,4 @@ public interface AttendOperation_repo {
     Connection setConn(Connection conn);
 
     List<Attend> getListOfAttend();
-
-    // List<Attend> addNewAttend(Attend a);
 }

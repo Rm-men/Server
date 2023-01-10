@@ -1,15 +1,10 @@
 package com.example.demo;
 
-import com.example.demo.operation.AttendOperation_repo;
-import com.example.demo.operation.AttendOperation_repo_Impl;
 import com.example.demo.operation.StudentOperation_repo_Impl;
-import com.example.demo.service.endpoint.StudentService;
 import com.example.demo.types.Attend;
 import com.example.demo.types.Student;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.stubbing.Answer;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -38,8 +33,9 @@ public class TestStudentRepo {
         Connection jdbcConnection = mock(Connection.class);
         Connection connection = repo.setConn(jdbcConnection);
         assertNotNull(connection);
-        assertEquals(jdbcConnection,connection);
+        assertEquals(jdbcConnection, connection);
     }
+
     //region Login (4)
     @Test
     void loginStudent_good() throws Exception {
@@ -47,12 +43,12 @@ public class TestStudentRepo {
         Student student = vyasa;
         ResultSet rs = mock(ResultSet.class);
         when(rs.next()).thenReturn(true).thenReturn(false);
-        when(rs.getInt("id")).thenReturn(student.getId());
-        when(rs.getString("name")).thenReturn(student.getName());
-        when(rs.getString("family")).thenReturn(student.getFamily());
-        when(rs.getString("patronymic")).thenReturn(student.getPatronymic());
-        when(rs.getInt("group")).thenReturn(student.getGroup());
-        when(rs.getString("code")).thenReturn(student.getCode());
+        when(rs.getInt("id")).thenReturn(student.id);
+        when(rs.getString("name")).thenReturn(student.name);
+        when(rs.getString("family")).thenReturn(student.family);
+        when(rs.getString("patronymic")).thenReturn(student.patronymic);
+        when(rs.getInt("group")).thenReturn(student.group);
+        when(rs.getString("code")).thenReturn(student.code);
 
         PreparedStatement ps = mock(PreparedStatement.class);
         when(ps.executeQuery()).thenReturn(rs);
@@ -60,15 +56,16 @@ public class TestStudentRepo {
 
         repo.setConn(jdbcConnection);
 
-        Student student1 = repo.loginStudent(student.getCode());
+        Student student1 = repo.loginStudent(student.code);
 
-        assertEquals(student1.getId(),student.getId());
-        assertEquals(student1.getName(),student.getName());
-        assertEquals(student1.getFamily(),student.getFamily());
-        assertEquals(student1.getPatronymic(),student.getPatronymic());
-        assertEquals(student1.getGroup(),student.getGroup());
-        assertEquals(student1.getCode(),student.getCode());
+        assertEquals(student1.id, student.id);
+        assertEquals(student1.name, student.name);
+        assertEquals(student1.family, student.family);
+        assertEquals(student1.patronymic, student.patronymic);
+        assertEquals(student1.group, student.group);
+        assertEquals(student1.code, student.code);
     }
+
     @Test
     void loginStudent_noCodeOnInput() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
@@ -83,15 +80,16 @@ public class TestStudentRepo {
         Student student1 = repo.loginStudent("student.getCode()");
         Throwable thrown = assertThrows(Exception.class, () -> {
             repo.setConn(jdbcConnection);
-            assertEquals(student1.getId(),student.getId());
-            assertEquals(student1.getName(),student.getName());
-            assertEquals(student1.getFamily(),student.getFamily());
-            assertEquals(student1.getPatronymic(),student.getPatronymic());
-            assertEquals(student1.getGroup(),student.getGroup());
-            assertEquals(student1.getCode(),student.getCode());
-            });
+            assertEquals(student1.id, student.id);
+            assertEquals(student1.name, student.name);
+            assertEquals(student1.family, student.family);
+            assertEquals(student1.patronymic, student.patronymic);
+            assertEquals(student1.group, student.group);
+            assertEquals(student1.code, student.code);
+        });
         assertNotNull(thrown.getMessage());
     }
+
     @Test
     void loginStudent_notCorrectCode() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
@@ -109,18 +107,19 @@ public class TestStudentRepo {
 
         assertNull(student1);
     }
+
     @Test
     void loginStudent_noConnect() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
         Student student = vyasa;
         ResultSet rs = mock(ResultSet.class);
         when(rs.next()).thenReturn(true).thenReturn(false);
-        when(rs.getInt("id")).thenReturn(student.getId());
-        when(rs.getString("name")).thenReturn(student.getName());
-        when(rs.getString("family")).thenReturn(student.getFamily());
-        when(rs.getString("patronymic")).thenReturn(student.getPatronymic());
-        when(rs.getInt("group")).thenReturn(student.getGroup());
-        when(rs.getString("code")).thenReturn(student.getCode());
+        when(rs.getInt("id")).thenReturn(student.id);
+        when(rs.getString("name")).thenReturn(student.name);
+        when(rs.getString("family")).thenReturn(student.family);
+        when(rs.getString("patronymic")).thenReturn(student.patronymic);
+        when(rs.getInt("group")).thenReturn(student.group);
+        when(rs.getString("code")).thenReturn(student.code);
 
         PreparedStatement ps = mock(PreparedStatement.class);
         when(ps.executeQuery()).thenReturn(rs);
@@ -128,13 +127,13 @@ public class TestStudentRepo {
 
         Throwable thrown = assertThrows(Exception.class, () -> {
             repo.setConn(null);
-            Student student1 = repo.loginStudent(student.getCode());
-            assertEquals(student1.getId(),student.getId());
-            assertEquals(student1.getName(),student.getName());
-            assertEquals(student1.getFamily(),student.getFamily());
-            assertEquals(student1.getPatronymic(),student.getPatronymic());
-            assertEquals(student1.getGroup(),student.getGroup());
-            assertEquals(student1.getCode(),student.getCode());
+            Student student1 = repo.loginStudent(student.code);
+            assertEquals(student1.id, student.id);
+            assertEquals(student1.name, student.name);
+            assertEquals(student1.family, student.family);
+            assertEquals(student1.patronymic, student.patronymic);
+            assertEquals(student1.group, student.group);
+            assertEquals(student1.code, student.code);
             assertNull(student1);
         });
         assertNotNull(thrown.getMessage());
@@ -152,10 +151,10 @@ public class TestStudentRepo {
 
         when(rs.next()).thenReturn(true).thenReturn(false);
 
-        when(rs.getInt("id")).thenReturn(attend.getId());
-        when(rs.getInt("subject")).thenReturn(attend.getSubject());
+        when(rs.getInt("id")).thenReturn(attend.id);
+        when(rs.getInt("subject")).thenReturn(attend.subject);
         when(rs.getString("datetime")).thenReturn(new Date().toString());
-        when(rs.getInt("student")).thenReturn(attend.getStudent());
+        when(rs.getInt("student")).thenReturn(attend.student);
         when(rs.getString("attend")).thenReturn(data);
 
         PreparedStatement ps = mock(PreparedStatement.class);
@@ -168,14 +167,15 @@ public class TestStudentRepo {
 
         repo.setConn(jdbcConnection);
 
-        Attend attend1 = repo.markAttend(student,attend);
+        Attend attend1 = repo.markAttend(student, attend);
 
-        assertEquals(attend1.getId(),a1.getId());
+        assertEquals(attend1.id, a1.id);
         // assertEquals(attend1.getDatetime(),a1.getDatetime());
-        assertEquals(attend1.getStudent(),a1.getStudent());
-        assertEquals(attend1.getSubject(),a1.getSubject());
-        assertNotEquals(attend1.getAttended(),a1.getAttended());
+        assertEquals(attend1.student, a1.student);
+        assertEquals(attend1.subject, a1.subject);
+        assertNotEquals(attend1.attended, a1.attended);
     }
+
     @Test
     void markAttend_noStudent() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
@@ -184,25 +184,26 @@ public class TestStudentRepo {
         ResultSet rs = mock(ResultSet.class);
 
         when(rs.next()).thenReturn(true).thenReturn(false);
-        when(rs.getInt("id")).thenReturn(attend.getId());
-        when(rs.getInt("subject")).thenReturn(attend.getSubject());
+        when(rs.getInt("id")).thenReturn(attend.id);
+        when(rs.getInt("subject")).thenReturn(attend.subject);
         when(rs.getString("datetime")).thenReturn(new Date().toString());
-        when(rs.getInt("student")).thenReturn(attend.getStudent());
-        when(rs.getString("attended")).thenReturn(attend.getAttended());
+        when(rs.getInt("student")).thenReturn(attend.student);
+        when(rs.getString("attend")).thenReturn(attend.attended);
 
         repo.setConn(jdbcConnection);
 
         Throwable thrown = assertThrows(Exception.class, () -> {
-            Attend attend1 = repo.markAttend(student,attend);
-            assertEquals(attend1.getId(),a1.getId());
-            assertEquals(attend1.getDatetime(),a1.getDatetime());
-            assertEquals(attend1.getStudent(),a1.getStudent());
-            assertEquals(attend1.getSubject(),a1.getSubject());
-            assertNotEquals(attend1.getAttended(),a1.getAttended());
+            Attend attend1 = repo.markAttend(student, attend);
+            assertEquals(attend1.id, a1.id);
+            assertEquals(attend1.datetime, a1.datetime);
+            assertEquals(attend1.student, a1.student);
+            assertEquals(attend1.subject, a1.subject);
+            assertNotEquals(attend1.attended, a1.attended);
             assertNull(attend1);
         });
         assertNotNull(thrown.getMessage());
     }
+
     @Test
     void markAttend_noAttend() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
@@ -220,16 +221,17 @@ public class TestStudentRepo {
         repo.setConn(jdbcConnection);
 
         Throwable thrown = assertThrows(Exception.class, () -> {
-            Attend attend1 = repo.markAttend(student,attend);
-            assertEquals(attend1.getId(),a1.getId());
-            assertEquals(attend1.getDatetime(),a1.getDatetime());
-            assertEquals(attend1.getStudent(),a1.getStudent());
-            assertEquals(attend1.getSubject(),a1.getSubject());
-            assertNotEquals(attend1.getAttended(),a1.getAttended());
+            Attend attend1 = repo.markAttend(student, attend);
+            assertEquals(attend1.id, a1.id);
+            assertEquals(attend1.datetime, a1.datetime);
+            assertEquals(attend1.student, a1.student);
+            assertEquals(attend1.subject, a1.subject);
+            assertNotEquals(attend1.attended, a1.attended);
             assertNull(attend1);
         });
         assertNotNull(thrown.getMessage());
     }
+
     @Test
     void markAttend_noAttend_noStudent() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
@@ -242,16 +244,17 @@ public class TestStudentRepo {
         repo.setConn(jdbcConnection);
 
         Throwable thrown = assertThrows(Exception.class, () -> {
-            Attend attend1 = repo.markAttend(student,attend);
-            assertEquals(attend1.getId(),a1.getId());
-            assertEquals(attend1.getDatetime(),a1.getDatetime());
-            assertEquals(attend1.getStudent(),a1.getStudent());
-            assertEquals(attend1.getSubject(),a1.getSubject());
-            assertNotEquals(attend1.getAttended(),a1.getAttended());
+            Attend attend1 = repo.markAttend(student, attend);
+            assertEquals(attend1.id, a1.id);
+            assertEquals(attend1.datetime, a1.datetime);
+            assertEquals(attend1.student, a1.student);
+            assertEquals(attend1.subject, a1.subject);
+            assertNotEquals(attend1.attended, a1.attended);
             assertNull(attend1);
         });
         assertNotNull(thrown.getMessage());
     }
+
     @Test
     void markAttend_uncorrectStudent() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
@@ -260,11 +263,11 @@ public class TestStudentRepo {
         ResultSet rs = mock(ResultSet.class);
 
         when(rs.next()).thenReturn(true).thenReturn(false);
-        when(rs.getInt("id")).thenReturn(attend.getId());
-        when(rs.getInt("subject")).thenReturn(attend.getSubject());
+        when(rs.getInt("id")).thenReturn(attend.id);
+        when(rs.getInt("subject")).thenReturn(attend.subject);
         when(rs.getString("datetime")).thenReturn(new Date().toString());
-        when(rs.getInt("student")).thenReturn(attend.getStudent());
-        when(rs.getString("attended")).thenReturn(attend.getAttended());
+        when(rs.getInt("student")).thenReturn(attend.student);
+        when(rs.getString("attend")).thenReturn(attend.attended);
 
         PreparedStatement ps = mock(PreparedStatement.class);
         PreparedStatement ps2 = mock(PreparedStatement.class);
@@ -277,15 +280,16 @@ public class TestStudentRepo {
             when(jdbcConnection.prepareStatement(repo.SET_ATTEND)).thenReturn(ps);
             when(jdbcConnection.prepareStatement(repo.GET_ATTEND_BY_ID)).thenReturn(ps2);
 
-            Attend attend1 = repo.markAttend(student,attend);
+            Attend attend1 = repo.markAttend(student, attend);
 
-            assertEquals(attend1.getId(),a1.getId());
-            assertEquals(attend1.getDatetime(),a1.getDatetime());
-            assertEquals(attend1.getStudent(),a1.getStudent());
-            assertEquals(attend1.getSubject(),a1.getSubject());
+            assertEquals(attend1.id, a1.id);
+            assertEquals(attend1.datetime, a1.datetime);
+            assertEquals(attend1.student, a1.student);
+            assertEquals(attend1.subject, a1.subject);
         });
         assertNotNull(thrown.getMessage());
     }
+
     @Test
     void markAttend_uncorrectAttend() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
@@ -309,11 +313,12 @@ public class TestStudentRepo {
         when(jdbcConnection.prepareStatement(repo.SET_ATTEND)).thenReturn(ps);
         when(jdbcConnection.prepareStatement(repo.GET_ATTEND_BY_ID)).thenReturn(ps2);
 
-        Attend attend1 = repo.markAttend(student,attend);
+        Attend attend1 = repo.markAttend(student, attend);
 
         assertNull(attend1);
 
     }
+
     @Test
     void markAttend_noConn() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
@@ -322,88 +327,123 @@ public class TestStudentRepo {
         ResultSet rs = mock(ResultSet.class);
 
         when(rs.next()).thenReturn(true).thenReturn(false);
-        when(rs.getInt("id")).thenReturn(attend.getId());
-        when(rs.getInt("subject")).thenReturn(attend.getSubject());
+        when(rs.getInt("id")).thenReturn(attend.id);
+        when(rs.getInt("subject")).thenReturn(attend.subject);
         when(rs.getString("datetime")).thenReturn(new Date().toString());
-        when(rs.getInt("student")).thenReturn(attend.getStudent());
-        when(rs.getString("attended")).thenReturn(attend.getAttended());
+        when(rs.getInt("student")).thenReturn(attend.student);
+        when(rs.getString("attend")).thenReturn(attend.attended);
 
         repo.setConn(null);
 
         Throwable thrown = assertThrows(Exception.class, () -> {
-            Attend attend1 = repo.markAttend(student,attend);
-            assertEquals(attend1.getId(),a1.getId());
-            assertEquals(attend1.getDatetime(),a1.getDatetime());
-            assertEquals(attend1.getStudent(),a1.getStudent());
-            assertEquals(attend1.getSubject(),a1.getSubject());
-            assertNotEquals(attend1.getAttended(),a1.getAttended());
+            Attend attend1 = repo.markAttend(student, attend);
+            assertEquals(attend1.id, a1.id);
+            assertEquals(attend1.datetime, a1.datetime);
+            assertEquals(attend1.student, a1.student);
+            assertEquals(attend1.subject, a1.subject);
+            assertNotEquals(attend1.attended, a1.attended);
             assertNull(attend1);
         });
         assertNotNull(thrown.getMessage());
     }
     //endregion
 
-    //region GetAttend (3)
+    //region GetAttend (4)
     @Test
-    void getListOfAttend_first() throws Exception {
+    void getListOfAttend_good() throws Exception {
+        Connection jdbcConnection = mock(Connection.class);
+        Attend attend = a1;
+        ResultSet rs = mock(ResultSet.class);
+        when(rs.next()).thenReturn(true).thenReturn(false);
+        when(rs.getInt("id")).thenReturn(attend.id);
+        when(rs.getInt("subject")).thenReturn(attend.subject);
+        when(rs.getString("datetime")).thenReturn(attend.datetime);
+        when(rs.getInt("student")).thenReturn(attend.student);
+        when(rs.getString("attended")).thenReturn(attend.attended);
+        PreparedStatement ps = mock(PreparedStatement.class);
+        when(jdbcConnection.prepareStatement(repo.GET_ATTEND_FROM)).thenReturn(ps);
+        when(ps.executeQuery()).thenReturn(rs);
+
+        repo.setConn(jdbcConnection);
+        List<Attend> list_code = new ArrayList<>();
+        list_code.add(attend);
+        List<Attend> list_repo = repo.getListOfAttend(vyasa);
+
+        assertEquals(list_repo.size(), list_code.size());
+        for (int i = 0; i < list_repo.size(); i++) {
+            assertEquals(list_repo.get(i).id, list_code.get(i).id);
+            assertEquals(list_repo.get(i).datetime, list_code.get(i).datetime);
+            assertEquals(list_repo.get(i).student, list_code.get(i).student);
+            assertEquals(list_repo.get(i).subject, list_code.get(i).subject);
+            assertEquals(list_repo.get(i).attended, list_code.get(i).attended);
+        }
+    }
+
+    @Test
+    void getAllAttend_noConn() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
 
         ResultSet rs = mock(ResultSet.class);
-        when(rs.next()).thenReturn(true).thenReturn(false);
-        when(rs.getInt("id")).thenReturn(a1.getId());
-        when(rs.getInt("subject")).thenReturn(a1.getSubject());
-        when(rs.getString("datetime")).thenReturn(a1.getDatetime());
-        when(rs.getInt("student")).thenReturn(a1.getStudent());
-        when(rs.getString("attended")).thenReturn(a1.getAttended());
+        when(rs.next()).thenReturn(false);
         Statement statement = mock(Statement.class);
-        when(statement.executeQuery(repo.GET_ATTEND_ALL)).thenReturn(rs);
+        when(statement.executeQuery(repo.GET_ATTEND_FROM)).thenReturn(rs);
+        when(jdbcConnection.createStatement()).thenReturn(statement);
+
+        repo.setConn(null);
+        List<Attend> list_code = new ArrayList<>();
+        list_code.add(a1);
+        Throwable thrown = assertThrows(Exception.class, () -> {
+                    List<Attend> list_repo = repo.getListOfAttend(vyasa);
+                    for (int i = 0; i < list_repo.size(); i++) {
+                        assertEquals(list_repo.get(i).id, list_code.get(i).id);
+                        assertEquals(list_repo.get(i).datetime, list_code.get(i).datetime);
+                        assertEquals(list_repo.get(i).student, list_code.get(i).student);
+                        assertEquals(list_repo.get(i).subject, list_code.get(i).subject);
+                        assertEquals(list_repo.get(i).attended, list_code.get(i).attended);
+                    }
+                }
+        );
+        assertNotNull(thrown.getMessage());
+    }
+
+    @Test
+    void getAllAttend_noFindAttend() throws Exception {
+        Connection jdbcConnection = mock(Connection.class);
+        Attend attend = a1;
+        ResultSet rs = mock(ResultSet.class);
+        when(rs.next()).thenReturn(false);
+        PreparedStatement ps = mock(PreparedStatement.class);
+        when(jdbcConnection.prepareStatement(repo.GET_ATTEND_FROM)).thenReturn(ps);
+        when(ps.executeQuery()).thenReturn(rs);
+
+        repo.setConn(jdbcConnection);
+
+        List<Attend> list_repo = repo.getListOfAttend(vyasa);
+
+        assertTrue(list_repo.isEmpty());
+    }
+
+    @Test
+    void getAllAttend_nullStudent() throws Exception {
+        Connection jdbcConnection = mock(Connection.class);
+
+        ResultSet rs = mock(ResultSet.class);
+        when(rs.next()).thenReturn(false);
+        Statement statement = mock(Statement.class);
+        when(statement.executeQuery(repo.GET_ATTEND_FROM)).thenReturn(rs);
         when(jdbcConnection.createStatement()).thenReturn(statement);
 
         repo.setConn(jdbcConnection);
         List<Attend> list_code = new ArrayList<>();
-        list_code.add(a1);
-        List<Attend> list_repo = repo.getListOfAttend();
-
-        assertEquals(list_repo.size(), list_code.size());
-        for (int i = 0; i< list_repo.size(); i++) {
-            assertEquals(list_repo.get(i).getId(),list_code.get(i).getId());
-            assertEquals(list_repo.get(i).getDatetime(),list_code.get(i).getDatetime());
-            assertEquals(list_repo.get(i).getStudent(),list_code.get(i).getStudent());
-            assertEquals(list_repo.get(i).getSubject(),list_code.get(i).getSubject());
-            assertEquals(list_repo.get(i).getAttended(),list_code.get(i).getAttended());
-        }
-    }
-    @Test
-    void getAllAttend_noConn() throws Exception {
-        Connection jdbcConnection =  mock(Connection.class);
-
-        ResultSet rs = mock(ResultSet.class);
-        when(rs.next()).thenReturn(false);
-        Statement statement = mock(Statement.class);
-        when(statement.executeQuery(repo.GET_ATTEND_ALL)).thenReturn(rs);
-        when(jdbcConnection.createStatement()).thenReturn(statement);
-
-        repo.setConn(null);
-
-        Throwable thrown = assertThrows(Exception.class, () ->
-            repo.getListOfAttend()
+        Throwable thrown = assertThrows(Exception.class, () -> {
+                    List<Attend> list_repo = repo.getListOfAttend(null);
+                    for (Attend attend : list_repo) {
+                        assertNotNull(attend.datetime);
+                        assertNotNull(attend.attended);
+                    }
+                }
         );
         assertNotNull(thrown.getMessage());
-    }
-    @Test
-    void getAllAttend_none() throws Exception {
-        Connection jdbcConnection = mock(Connection.class);
-
-        ResultSet rs = mock(ResultSet.class);
-        when(rs.next()).thenReturn(false);
-        Statement statement = mock(Statement.class);
-        when(statement.executeQuery(repo.GET_ATTEND_ALL)).thenReturn(rs);
-        when(jdbcConnection.createStatement()).thenReturn(statement);
-
-        repo.setConn(jdbcConnection);
-        List<Attend> list_repo = repo.getListOfAttend();
-
-        assertEquals(list_repo.size(), 0);
     }
     //endregion
 

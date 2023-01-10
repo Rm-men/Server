@@ -51,11 +51,11 @@ public class TestAttendedRepo {
 
         ResultSet rs = mock(ResultSet.class);
         when(rs.next()).thenReturn(true).thenReturn(false);
-        when(rs.getInt("id")).thenReturn(a1.getId());
-        when(rs.getInt("subject")).thenReturn(a1.getSubject());
-        when(rs.getString("datetime")).thenReturn(a1.getDatetime());
-        when(rs.getInt("student")).thenReturn(a1.getStudent());
-        when(rs.getString("attended")).thenReturn(a1.getAttended());
+        when(rs.getInt("id")).thenReturn(a1.id);
+        when(rs.getInt("subject")).thenReturn(a1.subject);
+        when(rs.getString("datetime")).thenReturn(a1.datetime);
+        when(rs.getInt("student")).thenReturn(a1.student);
+        when(rs.getString("attended")).thenReturn(a1.attended);
         Statement statement = mock(Statement.class);
         when(statement.executeQuery(repo.GET_ALL)).thenReturn(rs);
         when(jdbcConnection.createStatement()).thenReturn(statement);
@@ -67,11 +67,11 @@ public class TestAttendedRepo {
 
         assertEquals(list_repo.size(), list_code.size());
         for (int i = 0; i< list_repo.size(); i++) {
-            assertEquals(list_repo.get(i).getId(),list_code.get(i).getId());
-            assertEquals(list_repo.get(i).getDatetime(),list_code.get(i).getDatetime());
-            assertEquals(list_repo.get(i).getStudent(),list_code.get(i).getStudent());
-            assertEquals(list_repo.get(i).getSubject(),list_code.get(i).getSubject());
-            assertEquals(list_repo.get(i).getAttended(),list_code.get(i).getAttended());
+            assertEquals(list_repo.get(i).id,list_code.get(i).id);
+            assertEquals(list_repo.get(i).datetime,list_code.get(i).datetime);
+            assertEquals(list_repo.get(i).student,list_code.get(i).student);
+            assertEquals(list_repo.get(i).subject,list_code.get(i).subject);
+            assertEquals(list_repo.get(i).attended,list_code.get(i).attended);
         }
     }
     @Test
@@ -80,11 +80,11 @@ public class TestAttendedRepo {
 
         ResultSet rs = mock(ResultSet.class);
         when(rs.next()).thenReturn(true).thenReturn(false);
-        when(rs.getInt("id")).thenReturn(a1.getId());
-        when(rs.getInt("subject")).thenReturn(a1.getSubject());
-        when(rs.getString("datetime")).thenReturn(a1.getDatetime());
-        when(rs.getInt("student")).thenReturn(a1.getStudent());
-        when(rs.getString("attended")).thenReturn(a1.getAttended());
+        when(rs.getInt("id")).thenReturn(a1.id);
+        when(rs.getInt("subject")).thenReturn(a1.subject);
+        when(rs.getString("datetime")).thenReturn(a1.datetime);
+        when(rs.getInt("student")).thenReturn(a1.student);
+        when(rs.getString("attended")).thenReturn(a1.attended);
         Statement statement = mock(Statement.class);
         when(statement.executeQuery(repo.GET_ALL)).thenReturn(rs);
         when(jdbcConnection.createStatement()).thenReturn(statement);
@@ -96,11 +96,11 @@ public class TestAttendedRepo {
             List<Attend> list_repo = repo.getListOfAttend();
             assertEquals(list_repo.size(), list_code.size());
             for (int i = 0; i< list_repo.size(); i++) {
-                assertEquals(list_repo.get(i).getId(),list_code.get(i).getId());
-                assertEquals(list_repo.get(i).getDatetime(),list_code.get(i).getDatetime());
-                assertEquals(list_repo.get(i).getStudent(),list_code.get(i).getStudent());
-                assertEquals(list_repo.get(i).getSubject(),list_code.get(i).getSubject());
-                assertEquals(list_repo.get(i).getAttended(),list_code.get(i).getAttended());
+                assertEquals(list_repo.get(i).id,list_code.get(i).id);
+                assertEquals(list_repo.get(i).datetime,list_code.get(i).datetime);
+                assertEquals(list_repo.get(i).student,list_code.get(i).student);
+                assertEquals(list_repo.get(i).subject,list_code.get(i).subject);
+                assertEquals(list_repo.get(i).attended,list_code.get(i).attended);
             }
         });
         assertNotNull(thrown.getMessage());

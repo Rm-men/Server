@@ -1,10 +1,8 @@
 package com.example.demo;
 
-import com.example.demo.operation.AttendOperation_repo;
-import com.example.demo.operation.AttendOperation_repo_Impl;
+
 import com.example.demo.operation.StudentOperation_repo;
 import com.example.demo.operation.StudentOperation_repo_Impl;
-import com.example.demo.service.endpoint.AttendService;
 import com.example.demo.service.endpoint.StudentService;
 import com.example.demo.types.Attend;
 import com.example.demo.types.Student;
@@ -12,10 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -32,12 +30,15 @@ public class TestStudentController {
     Student vyasa = new Student(0, "Вася", "Васиков", "Васильевич", 300, "8800");
     Attend a1 = new Attend(0, 0, now.toString(), 0, "-");
 
+    public TestStudentController() throws SQLException {
+    }
+
     //region Login (1)
     @Test
     void loginStudent() {
-        when(repo.loginStudent(vyasa.getCode())).thenReturn(vyasa);
+        when(repo.loginStudent(vyasa.code)).thenReturn(vyasa);
 
-        Student st = service.loginStudent(vyasa.getCode());
+        Student st = service.loginStudent(vyasa.code);
 
         assertEquals (st,vyasa);
     }
@@ -61,9 +62,9 @@ public class TestStudentController {
         List<Attend> a1 = new ArrayList<>();
         a1.add(this.a1);
 
-        when(repo.getListOfAttend()).thenReturn(a1);
+        when(repo.getListOfAttend(vyasa)).thenReturn(a1);
 
-        List<Attend> a2 = service.getAllAttend();
+        List<Attend> a2 = service.getAllAttendForStudent(vyasa);
         assertEquals(a1, a2);
     }
     //endregion

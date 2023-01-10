@@ -16,6 +16,7 @@ import org.mockito.Mock;
 
 import java.sql.Connection;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +30,9 @@ public class TestAttendedController {
     private AttendService service = new AttendService(repo);
 
     Attend a1 = new Attend(3, 0, new Date().toString(), 0, "-");
+
+    public TestAttendedController() throws SQLException {
+    }
 
     //region GetAttends (1)
     @Test
