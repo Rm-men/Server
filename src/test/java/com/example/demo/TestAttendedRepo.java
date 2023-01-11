@@ -31,11 +31,7 @@ public class TestAttendedRepo {
     Student ivyasa = new Student(1, "Иван", "Иванов", "Иванович", 300, "55535");
 
     Attend a1 = new Attend(3, 0, now.toString(), 0, "-");
-    Attend a2 = new Attend(1, 0, now.toString(), 1, "-");
-    Attend a3 = new Attend(2, 0, now.toString(), 2, "-");
-    Attend a_noneDatetime = new Attend(3, 0, null, 3, "-");
-    Attend a_noneAttend = new Attend(3, 0, now.toString(), 3, null);
-    Attend a_noneAttend_noneDatetime = new Attend(3, 0, null, 3, null);
+
 
     @Test
     void conn_good() {

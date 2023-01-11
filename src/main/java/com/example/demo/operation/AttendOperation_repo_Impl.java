@@ -10,7 +10,6 @@ import java.util.List;
 public class AttendOperation_repo_Impl implements AttendOperation_repo {
 
     public String GET_ALL = "SELECT * FROM attending";
-
     public String ADD_NEW_ATTEND = "INSERT INTO attending VALUES (?,?,?,?,?)";
     Connection _conn;
 
@@ -19,7 +18,6 @@ public class AttendOperation_repo_Impl implements AttendOperation_repo {
         _conn = conn;
         return _conn;
     }
-
     @Override
     public List<Attend> getListOfAttend() {
         try (Statement stmt = _conn.createStatement()) {

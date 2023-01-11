@@ -9,7 +9,10 @@ import java.util.List;
 
 public interface StudentOperation_repo {
     Connection setConn(Connection conn);
-    List<Attend> getListOfAttend(Student st) ;
+
+    List<Attend> getListOfAttend(int st);
+
     Student loginStudent(String code) ;
-    Attend markAttend(Student s, Attend a) ;
+    Attend markAttend(int sid, int aid) ;
+
 }

@@ -3,6 +3,7 @@ package com.example.demo.operation;
 import com.example.demo.types.Attend;
 import com.example.demo.types.Student;
 
+import java.beans.Statement;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,7 +12,7 @@ import java.util.Objects;
 
 public class StudentOperation_repo_Impl implements StudentOperation_repo {
     public String GET_STUDENT_BY_CODE = "SELECT * FROM student WHERE code = ?";
-    public String GET_ATTEND_FROM = "SELECT * FROM attending WHERE id = ?";
+    public String GET_ATTEND_FROM = "SELECT * FROM attending WHERE student = ?";
     public String SET_ATTEND = "UPDATE attending SET attended = ? WHERE student = ? AND id = ?";
     public String GET_ATTEND_BY_ID = "SELECT * FROM attending WHERE id = ?";
 
@@ -20,14 +21,11 @@ public class StudentOperation_repo_Impl implements StudentOperation_repo {
     @Override
     public Connection setConn(Connection conn) {
         _conn = conn;
-        return _conn;
-    }
-
+        return _conn;}
     @Override
-    public List<Attend> getListOfAttend(Student st) {
+    public List<Attend> getListOfAttend(int st) {
         try (PreparedStatement ps = _conn.prepareStatement(GET_ATTEND_FROM)) {
-            if (st == null) throw new Exception();
-            ps.setInt(1, st.id);
+            ps.setInt(1, st);
             ResultSet rs = ps.executeQuery();
             List<Attend> lstAttend = new ArrayList<>();
             while (rs.next()) {
@@ -69,15 +67,16 @@ public class StudentOperation_repo_Impl implements StudentOperation_repo {
         }
     }
 
+
     @Override
-    public Attend markAttend(Student s, Attend a) {
+    public Attend markAttend(int s, int a) {
         try (PreparedStatement ps = _conn.prepareStatement(SET_ATTEND);
              PreparedStatement ps2 = _conn.prepareStatement(GET_ATTEND_BY_ID)) {
-            if (s == null || a == null) throw new Exception();
             ps.setString(1, new Date().toString());
-            ps.setInt(2, s.id);
-            ps.setInt(3, a.id);
-            ps.executeQuery();
+            ps.setInt(2, s);
+            ps.setInt(3, a);
+            ps.executeUpdate();
+            ps2.setInt(1,a);
             ResultSet rs = ps2.executeQuery();
             Attend at = null;
             while (rs.next()) {

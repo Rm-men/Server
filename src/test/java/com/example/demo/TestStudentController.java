@@ -49,9 +49,9 @@ public class TestStudentController {
     void markAttend() {
         Attend a1_1 = new Attend(0, 0, now.toString(), 0, new Date().toString());
 
-        when(repo.markAttend(vyasa,a1)).thenReturn(a1_1);
+        when(repo.markAttend(vyasa.id,a1.id)).thenReturn(a1_1);
 
-        Attend rez = service.setAttend(vyasa, a1);
+        Attend rez = service.setAttendForStudent(vyasa.id, a1.id);
         assertEquals(a1_1, rez);
     }
     //endregion
@@ -62,9 +62,10 @@ public class TestStudentController {
         List<Attend> a1 = new ArrayList<>();
         a1.add(this.a1);
 
-        when(repo.getListOfAttend(vyasa)).thenReturn(a1);
+        when(repo.getListOfAttend(vyasa.id)).thenReturn(a1);
 
-        List<Attend> a2 = service.getAllAttendForStudent(vyasa);
+        // List<Attend> a2 = service.getAllAttendForStudent(vyasa);
+        List<Attend> a2 = service.getAllAttendForStudent(vyasa.id);
         assertEquals(a1, a2);
     }
     //endregion

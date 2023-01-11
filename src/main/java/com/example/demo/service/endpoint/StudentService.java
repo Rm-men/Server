@@ -27,12 +27,12 @@ public class StudentService {
 
     }
     @WebMethod()
-    public List<Attend> getAllAttendForStudent(Student student)  {
+    public List<Attend> getAllAttendForStudent(int student)  {
         return repo.getListOfAttend(student);
     }
 
     @WebMethod()
-    public Attend setAttend(Student s, Attend a)  {
+    public Attend setAttendForStudent(int s, int a)  {
         return repo.markAttend(s,a);
     }
 
