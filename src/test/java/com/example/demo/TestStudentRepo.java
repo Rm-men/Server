@@ -37,7 +37,7 @@ public class TestStudentRepo {
         assertEquals(jdbcConnection, connection);
     }
 
-    //region Login (4)
+    //region Login
     @Test
     void loginStudent_good() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
@@ -200,13 +200,18 @@ public class TestStudentRepo {
     }
     //endregion
 
-    //region MarkAttend (7)
+    //region MarkAttend
     @Test
     void markAttend_good() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
         String data = "Tue Jan 10 23:44:25 MSK 2023";
         Student student = vyasa;
-        Attend attend = a3;
+        Attend attend = a1;
+
+        ResultSet rs0 = mock(ResultSet.class);
+        when(rs0.next()).thenReturn(true).thenReturn(false);
+        when(rs0.getString("attended")).thenReturn("-");
+
         ResultSet rs = mock(ResultSet.class);
 
         when(rs.next()).thenReturn(true).thenReturn(false);
@@ -217,11 +222,15 @@ public class TestStudentRepo {
         when(rs.getInt("student")).thenReturn(attend.student);
         when(rs.getString("attend")).thenReturn(data);
 
+        PreparedStatement ps0 = mock(PreparedStatement.class);
         PreparedStatement ps = mock(PreparedStatement.class);
         PreparedStatement ps2 = mock(PreparedStatement.class);
 
+        when(ps0.executeQuery()).thenReturn(rs0);
         when(ps.executeQuery()).thenReturn(rs);
         when(ps2.executeQuery()).thenReturn(rs);
+
+        when(jdbcConnection.prepareStatement(repo.GET_ONLY_ATTEND_BY_ID)).thenReturn(ps0);
         when(jdbcConnection.prepareStatement(repo.SET_ATTEND)).thenReturn(ps);
         when(jdbcConnection.prepareStatement(repo.GET_ATTEND_BY_ID)).thenReturn(ps2);
 
@@ -234,6 +243,40 @@ public class TestStudentRepo {
         assertEquals(attend1.student, attend.student);
         assertEquals(attend1.subject, attend.subject);
         assertNotEquals(attend1.attended, attend.attended);
+    }
+    @Test
+    void markAttend_replaceRollback() throws Exception {
+        Connection jdbcConnection = mock(Connection.class);
+        String data = "Tue Jan 10 23:44:25 MSK 2023";
+        Student student = vyasa;
+        Attend attend = a1;
+
+        ResultSet rs0 = mock(ResultSet.class);
+        when(rs0.next()).thenReturn(true).thenReturn(false);
+        when(rs0.getString("attended")).thenReturn(data);
+
+        ResultSet rs = mock(ResultSet.class);
+
+        when(rs.next()).thenReturn(true).thenReturn(false);
+
+
+        PreparedStatement ps0 = mock(PreparedStatement.class);
+        PreparedStatement ps = mock(PreparedStatement.class);
+        PreparedStatement ps2 = mock(PreparedStatement.class);
+
+        when(ps0.executeQuery()).thenReturn(rs0);
+        when(ps.executeQuery()).thenReturn(rs);
+        when(ps2.executeQuery()).thenReturn(rs);
+
+        when(jdbcConnection.prepareStatement(repo.GET_ONLY_ATTEND_BY_ID)).thenReturn(ps0);
+        when(jdbcConnection.prepareStatement(repo.SET_ATTEND)).thenReturn(ps);
+        when(jdbcConnection.prepareStatement(repo.GET_ATTEND_BY_ID)).thenReturn(ps2);
+
+        repo.setConn(jdbcConnection);
+
+        Attend attend1 = repo.markAttend(student.id, attend.id);
+
+        assertNull(attend1);
     }
     @Test
     void markAttend_noNameStudent() throws Exception {
@@ -429,7 +472,7 @@ public class TestStudentRepo {
     }
     //endregion
 
-    //region GetAttend (4)
+    //region GetAttend
     @Test
     void getListOfAttend_good() throws Exception {
         Connection jdbcConnection = mock(Connection.class);
